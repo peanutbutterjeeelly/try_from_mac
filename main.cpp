@@ -989,20 +989,43 @@ public:
             return a->val<b->val;
         }
     };
-    ListNode* mergeK_LinkedList_priorityqueue(vector<ListNode*> Lists){
-        priority_queue<ListNode*,vector<ListNode*>,cmp> pri_queue;
-        for(auto elem:Lists){
+    ListNode* mergeK_LinkedList_priorityqueue(vector<ListNode*> lists){
+        priority_queue<ListNode*, vector<ListNode*>, cmp> pri_queue;
+        // 建立大小为k的小根堆
+        for(auto elem : lists){
             if(elem) pri_queue.push(elem);
         }
+        // 可以使用哑节点/哨兵节点
         ListNode dummy(-1);
         ListNode* p = &dummy;
+        // 开始出队
         while(!pri_queue.empty()){
-            ListNode* top=pri_queue.top(); pri_queue.pop();
-            p->next=top;p=top;
-            if(top->next)pri_queue.push(top->next);
+            ListNode* top = pri_queue.top(); pri_queue.pop();
+            p->next = top; p = top;
+            if(top->next) pri_queue.push(top->next);
+        }
+        return dummy.next;
+    }
+    ListNode* merge(ListNode* p1, ListNode* p2){
+        if(!p1) return p2;
+        if(!p2) return p1;
+        if(p1->val <= p2->val){
+            p1->next = merge(p1->next, p2);
+            return p1;
+        }else{
+            p2->next = merge(p1, p2->next);
+            return p2;
         }
     }
 
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if(lists.size() == 0) return nullptr;
+        ListNode* head = lists[0];
+        for(int i = 1; i<lists.size(); ++i){
+            if(lists[i]) head = merge(head, lists[i]);
+        }
+        return head;
+    }
 };
 class merge_two_sorted_LL {
     //输入：l1 = [1, 2, 4], l2 = [1, 3, 4]
@@ -3412,6 +3435,22 @@ int main() {
     vector<int> merge_b{ 2,5,6 };
     merge_sorted_array.merge(merge_a, 3, merge_b, 3);
     cout << "merge_sorted_array: " << merge_a << endl;
+
+    //merge_k_sorted_LL
+    SinglyLinkedList LL1{1,2,3,4};
+    SinglyLinkedList LL2{2,3,4};
+    SinglyLinkedList LL3{4,5,6,7};
+    merge_K_sorted_LL merge_k;
+    vector<ListNode*> LL_Heads;
+    LL_Heads.push_back(LL1.head);
+    LL_Heads.push_back(LL2.head);
+    LL_Heads.push_back(LL3.head);
+    cout<<"merge_K_sorted_LL: ";
+    ListNode* k_sortedLL_head=merge_k.mergeKLists(LL_Heads);
+    //ListNode* k_sortedLL_head_pri=merge_k.mergeK_LinkedList_priorityqueue(LL_Heads);
+    cout << k_sortedLL_head->val<<endl;
+
+
 
 
 }
