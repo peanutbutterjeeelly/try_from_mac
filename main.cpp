@@ -981,7 +981,7 @@ public:
         }
     }
 };
-//linkedlist
+//linkedlist..
 class merge_K_sorted_LL{
 public:
     struct cmp{
