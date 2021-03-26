@@ -990,21 +990,18 @@ public:
         }
     };
     ListNode* mergeK_LinkedList_priorityqueue(vector<ListNode*> lists){
-        priority_queue<ListNode*, vector<ListNode*>, cmp> pri_queue;
-        // 建立大小为k的小根堆
-        for(auto elem : lists){
-            if(elem) pri_queue.push(elem);
+        auto cmp = [&](const ListNode *a, const ListNode *b){ return a->val > b->val; };
+        priority_queue<ListNode*,vector<ListNode*>, decltype(cmp)> q(cmp);
+        for(auto &c:lists) if(c) q.push(c);
+        ListNode *root = new ListNode(-1), *p = root;
+        while(!q.empty()) {
+            auto t = q.top();
+            q.pop();
+            p->next = t;
+            p = p->next;
+            if(t->next) q.push(t->next);
         }
-        // 可以使用哑节点/哨兵节点
-        ListNode dummy(-1);
-        ListNode* p = &dummy;
-        // 开始出队
-        while(!pri_queue.empty()){
-            ListNode* top = pri_queue.top(); pri_queue.pop();
-            p->next = top; p = top;
-            if(top->next) pri_queue.push(top->next);
-        }
-        return dummy.next;
+        return root->next;
     }
     ListNode* merge(ListNode* p1, ListNode* p2){
         if(!p1) return p2;
@@ -3446,9 +3443,16 @@ int main() {
     LL_Heads.push_back(LL2.head);
     LL_Heads.push_back(LL3.head);
     cout<<"merge_K_sorted_LL: ";
-    ListNode* k_sortedLL_head=merge_k.mergeKLists(LL_Heads);
+    ListNode* k_sortedLL_head=merge_k.mergeK_LinkedList_priorityqueue(LL_Heads);
     //ListNode* k_sortedLL_head_pri=merge_k.mergeK_LinkedList_priorityqueue(LL_Heads);
-    cout << k_sortedLL_head->val<<endl;
+    //cout << k_sortedLL_head->val<<endl;
+    while(k_sortedLL_head){
+        cout<<k_sortedLL_head->val;
+        cout<<" ";
+        k_sortedLL_head=k_sortedLL_head->next;
+    }
+
+
 
 
 
