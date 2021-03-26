@@ -982,6 +982,28 @@ public:
     }
 };
 //linkedlist
+class merge_K_sorted_LL{
+public:
+    struct cmp{
+        bool operator()(ListNode* a, ListNode* b){
+            return a->val<b->val;
+        }
+    };
+    ListNode* mergeK_LinkedList_priorityqueue(vector<ListNode*> Lists){
+        priority_queue<ListNode*,vector<ListNode*>,cmp> pri_queue;
+        for(auto elem:Lists){
+            if(elem) pri_queue.push(elem);
+        }
+        ListNode dummy(-1);
+        ListNode* p = &dummy;
+        while(!pri_queue.empty()){
+            ListNode* top=pri_queue.top(); pri_queue.pop();
+            p->next=top;p=top;
+            if(top->next)pri_queue.push(top->next);
+        }
+    }
+
+};
 class merge_two_sorted_LL {
     //输入：l1 = [1, 2, 4], l2 = [1, 3, 4]
     //输出：[1, 1, 2, 3, 4, 4]
