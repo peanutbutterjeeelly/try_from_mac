@@ -1867,10 +1867,11 @@ public:
 		if(left<right)//只要left<right，最终情况是left=right，即数组长度为1，单独一个数，肯定是有序的
 		{
 			int mid=(left+right)/2;//取中点
-			cout << "merge_left: " << left << " " << mid<<endl;
+			cout << "merge_left: " << nums[left] << " " << nums[mid]<<endl;
 			MergeSort(nums,left,mid);//左边块递归排序
-			cout << "merge_right: " << mid+1 << " " << right<<endl;
+			cout << "merge_right: " << nums[mid+1] << " " << nums[right]<<endl;
 			MergeSort(nums,mid+1,right);
+			cout << "merge: " << nums[left] << " " << nums[mid] << " " << nums[mid+1] << " " << nums[right]<<endl;
 			Merge(nums,left,mid,mid+1,right);//左右块合并
 		}
 	}
@@ -3816,7 +3817,7 @@ int main()
 
 	//merge_sort_recursion
 
-	vector<int> merge_sort_vec{5,1,1,2,0,0};
+	vector<int> merge_sort_vec{5,1,3,2,0,0,4,7};
 	cout << endl << "merge_sort_recursion: " << merge_sort_vec << endl;
 	vector<int> merge_sort_res = qs.sortArray(merge_sort_vec);
 	cout << merge_sort_vec << endl;
