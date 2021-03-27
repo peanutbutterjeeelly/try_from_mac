@@ -1063,19 +1063,34 @@ public:
 };
 
 //linkedlist..
-class Node_ {
+class Node_class {
 public:
 	int val;
-	Node_* next;
-	Node_* random;
+	Node_class* next;
+	Node_class* random;
 
-	Node_(int _val)
+	explicit Node_class(int _val)
 	{
 		val = _val;
 		next = nullptr;
 		random = nullptr;
 	}
 };
+class copy_random_List{
+private:
+	unordered_map<Node_class*, Node_class*> dic;
+public:
+	Node_class* copyRandomList(Node_class* head){
+		if (head == nullptr) return nullptr;
+		if (dic.count(head)) return dic[head];
+		Node_class* root = new Node_class(head->val);
+		dic[head] = root;
+		root->next = copyRandomList(head->next);
+		root->random = copyRandomList(head->random);
+		return root;
+	}
+};
+
 class merge_K_sorted_LL {
 public:
 	struct cmp {
@@ -3822,5 +3837,37 @@ int main()
 	vector<int> merge_sort_res = qs.sortArray(merge_sort_vec);
 	cout << merge_sort_vec << endl;
 //
+	//copy_random_List, deep_copy
+	cout << endl<<"copy_random_list: ";
+	copy_random_List cp_rand;
+	Node_class* node_class_head = new Node_class(7);
+	Node_class* node_class_1 = new Node_class(13);
+	Node_class* node_class_2 = new Node_class(11);
+	Node_class* node_class_3 = new Node_class(10);
+	Node_class* node_class_4 = new Node_class(1);
+	node_class_head->next = node_class_1;
+	node_class_1->next = node_class_2;
+	node_class_2->next = node_class_3;
+	node_class_3->next = node_class_4;
+	node_class_4->next = nullptr;
+	node_class_head->random = nullptr;
+	node_class_1->random = node_class_head;
+	node_class_2->random = node_class_3;
+	node_class_3->random = node_class_2;
+	node_class_4->random = node_class_head;
+	auto* new_node_head = cp_rand.copyRandomList(node_class_head);
+	while(new_node_head){
+		cout << new_node_head->val << " ";
+		new_node_head = new_node_head->next;
+	}
+	cout << endl;
+	cout<<"node1's random: "<<node_class_1->random->val << endl;
+
+
+
+
+
+
+
 
 }
