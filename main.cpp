@@ -993,6 +993,18 @@ public:
 };
 
 //linkedlist..
+class Node_ {
+public:
+    int val;
+    Node_ *next;
+    Node_ *random;
+
+    Node_(int _val) {
+        val = _val;
+        next = nullptr;
+        random = nullptr;
+    }
+};
 class merge_K_sorted_LL {
 public:
     struct cmp {
