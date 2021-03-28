@@ -1871,6 +1871,47 @@ public:
 
 class SortAlgorithm {
 public:
+	void mergeSort_iter(int* A, int low, int mid, int high)
+	{
+		int* temp = new int[high - low + 1];
+		int i = low, j = mid + 1, k = 0;
+		while (i <= mid && j <= high)
+		{
+			if (A[i] < A[j])
+				temp[k++] = A[i++];
+			else
+				temp[k++] = A[j++];
+		}
+		while (i <= mid)
+		{
+			temp[k++] = A[i++];
+		}
+		while (j <= high)
+		{
+			temp[k++] = A[j++];
+		}
+		for (int i = low, k = 0; i <= high; i++, k++)
+			A[i] = temp[k];
+		delete[]temp;
+	}
+	void Merge_iter(int* A, int n)
+	{
+		int size = 1, low, high, mid;
+		while (size <= n - 1)
+		{
+			low = 0;
+			while (low + size <= n - 1)
+			{
+				mid = low + size - 1;
+				high = mid + size;
+				if (high > n - 1)
+					high = n - 1;
+				mergeSort_iter(A, low, mid, high);
+				low = high + 1;
+			}
+			size *= 2;
+		}
+	}
 	vector<int> sortArray(vector<int>& nums) {//归并排序
 		int left=0;
 		int right=nums.size()-1;
@@ -3836,7 +3877,16 @@ int main()
 	cout << endl << "merge_sort_recursion: " << merge_sort_vec << endl;
 	vector<int> merge_sort_res = qs.sortArray(merge_sort_vec);
 	cout << merge_sort_vec << endl;
-//
+
+	//merge_sort_iteration
+	int merge_sort_array[8]={1, 4, 6,8, 3,4, 5,1};
+	int array_len = sizeof(merge_sort_array)/sizeof(merge_sort_array[0]);
+	qs.Merge_iter(merge_sort_array,array_len);
+	for (int i = 0; i<array_len;i++) {
+		cout << merge_sort_array[i]<<" ";
+	}
+
+
 	//copy_random_List, deep_copy
 	cout << endl<<"copy_random_list: ";
 	copy_random_List cp_rand;
