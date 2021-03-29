@@ -399,6 +399,21 @@ SinglyLinkedList::SinglyLinkedList(const initializer_list<int>& I)
 }
 
 //Binary tree
+class construct_binaryTree_from_pre_in_order{
+private:
+	unordered_map<int, int> index;
+public:
+	TreeNode* myBuildTree(const vector<int>& preorder, const vector<int>& inorder,
+	                         int preorder_left, int preorder_right,
+	                         int inorder_left, int inorder_right){
+		if(preorder_left>preorder_right){
+			return nullptr;
+		}
+		int preorder_root = preorder_left;
+		int inorder_root = index[preorder[preorder_root]];
+
+	}
+};
 class getMinDepth {
 public:
 	int getDepth(TreeNode* node)
@@ -1906,6 +1921,7 @@ public:
 				high = mid + size;
 				if (high > n - 1)
 					high = n - 1;
+				cout << "mergeSort_iteration: " << A[low] << " " << A[high] << " " << A[mid] << endl;
 				mergeSort_iter(A, low, mid, high);
 				low = high + 1;
 			}
@@ -3879,8 +3895,13 @@ int main()
 	cout << merge_sort_vec << endl;
 
 	//merge_sort_iteration
-	int merge_sort_array[8]={1, 4, 6,8, 3,4, 5,1};
+	cout << endl;
+	int merge_sort_array[8]={1, 4, 8,6, 3,9, 5,7};
 	int array_len = sizeof(merge_sort_array)/sizeof(merge_sort_array[0]);
+	for (int i = 0; i<array_len;i++) {
+		cout << merge_sort_array[i]<<" ";
+	}
+	cout << endl;
 	qs.Merge_iter(merge_sort_array,array_len);
 	for (int i = 0; i<array_len;i++) {
 		cout << merge_sort_array[i]<<" ";
