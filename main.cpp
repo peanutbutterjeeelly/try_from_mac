@@ -399,6 +399,25 @@ SinglyLinkedList::SinglyLinkedList(const initializer_list<int>& I)
 }
 
 //Binary tree
+class diameter_of_binary_tree{
+	int ans;
+	int depth(TreeNode* rt){
+		if (rt == NULL) {
+			return 0; // 访问到空节点了，返回0
+		}
+		int L = depth(rt->left); // 左儿子为根的子树的深度
+		int R = depth(rt->right); // 右儿子为根的子树的深度
+		ans = max(ans, L + R + 1); // 计算d_node即L+R+1 并更新ans
+		return max(L, R) + 1; // 返回该节点为根的子树的深度
+	}
+public:
+	int diameterOfBinaryTree(TreeNode* root) {
+		ans = 1;
+		depth(root);
+		return ans - 1;
+	}
+
+};
 class construct_binaryTree_from_pre_in_order{
 private:
 	unordered_map<int, int> index;
@@ -426,6 +445,7 @@ public:
 		// 先序遍历中「从 左边界+1+左子树节点数目 开始到 右边界」的元素就对应了中序遍历中「从 根节点定位+1 到 右边界」的元素
 		root->right = myBuildTree(preorder, inorder, preorder_left + size_left_subtree + 1, preorder_right, inorder_root + 1, inorder_right);
 		return root;
+
 	}
 
 	TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
@@ -918,7 +938,35 @@ public:
 	}
 
 };
+class first_last_pos_inArray{
+public:
+	int binarySearch(vector<int>& nums, int target, bool lower){
+		int left = 0, right = (int)nums.size()-1, ans = (int)nums.size();
+		while(left<=right){
+			int mid = (left+right)/2;
+			if(nums[mid]>target||(lower&&nums[mid]>=target)){
+				right = mid-1;
+				ans = mid;
+			}else{
+				left = mid+1;
+			}
+		}
+		return ans;
+	}
+	vector<int> searchRange(vector<int>& nums,int target){
+		//二分查找中，寻找 \textit{leftIdx}leftIdx 即为在数组中寻找第一个大于等于 \textit{target}target 的下标，
+		//寻找 \textit{rightIdx}rightIdx 即为在数组中寻找第一个大于 \textit{target}target 的下标，
+		//然后将下标减一。
 
+		int leftIdx = binarySearch(nums, target, true);
+		int rightIdx = binarySearch(nums, target, false)-1;
+		if(leftIdx<=rightIdx&&rightIdx<nums.size()&&nums[leftIdx]==target&&nums[rightIdx]==target){
+			return vector<int>{ leftIdx, rightIdx };
+		}
+		return vector<int>{-1,-1};
+
+	}
+};
 class Leetcode35 {//binary search
 public:
 	int searchInsert(vector<int>& nums, int target)
@@ -3964,5 +4012,13 @@ int main()
 	TreeNode* construct_binary_tree = binary_tree_constructor.buildTree(preorder_list, inorder_list);
 	cout << "reconstruct binary tree from pre and inorder" << endl;
 	cout << Level.LevelOrder(construct_binary_tree) << endl;
+
+	diameter_of_binary_tree diameter_of_binary_tree;
+	cout << "diameter of binary tree: " << diameter_of_binary_tree.diameterOfBinaryTree(construct_binary_tree);
+	cout << endl;
+
+	first_last_pos_inArray search_range;
+	vector<int> search_range_vec{5,7,7,8,8,10};
+	cout << search_range.searchRange(search_range_vec, 8);
 
 }
