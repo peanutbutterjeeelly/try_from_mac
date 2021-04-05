@@ -1230,7 +1230,36 @@ public:
 		return result==INT32_MAX ? 0 : result;
 	}
 };
+class spiral_order{
+private:
+    static constexpr int directions[4][2]{{0,1},{1,0},{0,-1},{-1,0}};
+public:
+    vector<int> spiralorder(vector<vector<int>>& matrix){
+        if(matrix.size()==0||matrix[0].size()==0){
+            return {};
+        }
+        int rows =matrix.size(), columns=matrix[0].size();
+        vector<vector<bool>> visited(rows,vector<bool>(columns));
+        int total = rows*columns;
+        vector<int> order(total);
+        int row=0,column=0;
+        int directionIndex=0;
+        for(int i=0;i<total;++i) {
+            order[i] = matrix[row][column];
+            visited[row][column]=true;
+            int nextRow=row+directions[directionIndex][0];
+            int nextColumn=column+directions[directionIndex][1];
+            if(nextRow<0||nextRow>=rows||nextColumn<0||nextColumn>=columns||visited[nextRow][nextColumn]){
+                directionIndex=(directionIndex+1)%4;
+            }
+            row+=directions[directionIndex][0];
+            column+=directions[directionIndex][1];
+        }
+        return order;
 
+    }
+
+};
 class Leetcode59 {//SpiralMatrix
 public:
 	vector<vector<int>> SpiralMatrix(int n)
@@ -2943,6 +2972,43 @@ public:
 
 	}
 };
+class sort_colors{
+public:
+    void sortcolors(vector<int>& nums){
+        int n=nums.size();
+        int ptr=0;
+        for(int i=0;i<n;++i){
+            if(nums[i]==0){
+                swap(nums[i],nums[ptr]);
+                ++ptr;
+            }
+        }
+        for(int i=ptr;i<n;++i){
+            if(nums[i]==1){
+                swap(nums[i],nums[ptr]);
+                ++ptr;
+            }
+        }
+    }
+    void sortcolors_doubleptr(vector<int>& nums){
+        int n=nums.size();
+        int p0=0,p1=0;
+        for(int i=0;i<n;++i){
+            if(nums[i]==1){
+                swap(nums[i],nums[p1]);
+                ++p1;
+            }
+            else if(nums[i]==0){
+                swap(nums[i],nums[p0]);
+                if (p0 < p1) {
+                    swap(nums[i], nums[p1]);
+                }
+            ++p1;
+            ++p0;
+            }
+        }
+    }
+};
 
 class medianFinder {
 	priority_queue<int> lo; //max heap
@@ -4247,4 +4313,22 @@ int main()
 	//
 	cout << "intersection of two array is: " << find_intersec_of_twoArr.intersect(intersec_a, intersec_b) << endl;
 	cout << "intersection of two array is: " << find_intersec_of_twoArr.intersect_sort(intersec_a, intersec_b) << endl;
+
+	sort_colors sortColors;
+	vector<int> sorting_color_arr{0,1,2,1,2,0,1};
+	sortColors.sortcolors(sorting_color_arr);
+	cout<< "sort color arr: "<< sorting_color_arr<<endl;
+	vector<int> sorting_color_arr_doubleptr{0,1,2,1,2,0,1};
+	sortColors.sortcolors_doubleptr(sorting_color_arr_doubleptr);
+    cout<< "sort color arr: "<< sorting_color_arr<<endl<<endl;
+
+    spiral_order spiralOrder;
+    vector<vector<int>> orig_matrix{{1,2,3},
+                                    {4,5,6},
+                                    {7,8,9}};
+    vector<int> spiral_res=spiralOrder.spiralorder(orig_matrix);
+    cout<<"spiral traversal is: "<<spiral_res<<endl;
+
+
+
 }
