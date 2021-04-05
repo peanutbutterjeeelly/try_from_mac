@@ -975,7 +975,81 @@ public:
 		return res;
 	}
 };
-
+class intersection_of_two_arr{
+public:
+	vector<int> intersect(vector<int>& nums1, vector<int>& nums2){
+		if(nums1.size()>nums2.size()){
+			return intersect(nums2, nums1);
+		}
+		unordered_map<int, int> m;
+		for(int num:nums1){
+			++m[num];
+		}
+		vector<int> intersection;
+		for(int num:nums2){
+			if(m.count(num)){
+				intersection.push_back(num);
+				--m[num];
+				if(m[num]==0){
+					m.erase(num);
+				}
+			}
+		}
+		return intersection;
+	}
+	vector<int> intersect_sort(vector<int>& nums1, vector<int>& nums2){
+		//如果两个数组是有序的，则可以使用双指针的方法得到两个数组的交集。
+		//首先对两个数组进行排序，然后使用两个指针遍历两个数组。
+		//初始时，两个指针分别指向两个数组的头部。每次比较两个指针指向的两个数组中的数字，
+		//如果两个数字不相等，则将指向较小数字的指针右移一位，
+		//如果两个数字相等，将该数字添加到答案，并将两个指针都右移一位。
+		//当至少有一个指针超出数组范围时，遍历结束。
+		sort(nums1.begin(), nums1.end());
+		sort(nums2.begin(), nums2.end());
+		int length1 = nums1.size(), length2 = nums2.size();
+		vector<int> intersection;
+		int index1 = 0, index2 = 0;
+		while(index1<length1&&index2<length2){
+			if(nums1[index1]<nums2[index2]){
+				index1++;
+			}else if(nums1[index1]>nums2[index2]){
+				index2++;
+			}else{
+				intersection.push_back(nums1[index1]);
+				index1++;
+				index2++;
+			}
+		}
+		return intersection;
+	}
+};
+class max_product_subarray{
+public:
+	//https://leetcode-cn.com/problems/maximum-product-subarray/solution/cheng-ji-zui-da-zi-shu-zu-by-leetcode-solution/
+	int maxProduct(vector<int>& nums){
+		int n = nums.size();
+		if(n==0) {
+			return 0;
+		}else if(n==1){
+			return nums[0];
+		}
+		int p = nums[0];
+		int maxP = nums[0];
+		int minP = nums[0];
+		for (int i = 1; i<n;i++) {
+			int t = maxP;
+			cout << "t is: " << t << endl;
+			maxP = max(max(maxP*nums[i], nums[i]), minP*nums[i]);
+			cout << "maxP is: " << maxP << endl;
+			minP = min(min(t*nums[i], nums[i]), minP*nums[i]);
+			cout << "minP is: " << minP << endl;
+			p = max(maxP, p);
+			cout << "p is: " << p << endl;
+			cout << endl;
+		}
+		return p;
+	}
+};
 class fib {
 public:
 	int climbStairs(int n)
@@ -4161,6 +4235,15 @@ int main()
 	BSTIterator* bst_iterator = new BSTIterator(Bst_Root);
 	cout<<bst_iterator->next()<<endl;
 
+	max_product_subarray max_product_subarray;
+	vector<int> max_product_arr{2,3,-2,4};
+	int max_prod_res = max_product_subarray.maxProduct(max_product_arr);
 	//BSTIterator_iterative* bst_iterator_iterative = new BSTIterator_iterative(Bst_Root);
 	//cout << bst_iterator_iterative->next() << endl;
+
+	intersection_of_two_arr find_intersec_of_twoArr;
+	vector<int> intersec_a{4,9,5};
+	vector<int> intersec_b{9,4,9,8,4};
+	cout << "intersection of two array is: " << find_intersec_of_twoArr.intersect(intersec_a, intersec_b) << endl;
+	cout << "intersection of two array is: " << find_intersec_of_twoArr.intersect_sort(intersec_a, intersec_b) << endl;
 }
