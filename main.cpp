@@ -869,7 +869,8 @@ public:
 		string temp;
 		string num;
 		for (auto i : str) {
-			if (isdigit(i) || i==pattern || i=='+' || i=='-') {//clean string to make sure no special char
+			if (isdigit(i) || i==pattern || i=='+' || i=='-') {
+				//clean string to make sure no special char
 				temp.push_back(i);
 			}
 		}
@@ -891,7 +892,22 @@ public:
 		return res;
 	}
 };
+class split_string{
+	//split_str
+public:
+	vector<string> split(const string &s , const string &seperator){
+		vector<string> split;
+		typedef string::size_type string_size;
+		string_size i = 0;
 
+		while(i!=s.size()){
+
+		}
+
+
+	}
+
+};
 class offer67 {//str to int
 public:
 	int strToInt(string str)
