@@ -399,6 +399,68 @@ SinglyLinkedList::SinglyLinkedList(const initializer_list<int>& I)
 }
 
 //Binary tree
+class property_of_binary_tree{
+public:
+    int get_maxDepth(TreeNode* root){
+        if(root==nullptr){
+            return 0;
+        }
+        int leftDepth = get_maxDepth(root->left);
+        cout<<"left depth of node "<<root->left->val<< "is "<< leftDepth<<endl;
+        int rightDepth = get_maxDepth(root->right);
+        cout<<"right depth of node "<<root->right->val<< "is "<< rightDepth<<endl;
+        int depth =  1+ max(leftDepth,rightDepth);
+        cout<<"depth is "<<depth<<endl;
+        return depth;
+    }
+    int maxDepth(TreeNode* root){
+        return get_maxDepth(root);
+    }
+    int widthOfBinaryTree(TreeNode* root) {
+        if (root == nullptr)
+        {
+            return 0;
+        }
+        // 保存最大的宽度
+        int res = 0;
+        // 队列用于广度优先遍历
+        queue<TreeNode*> q;
+        // 对于根节点的编号为0
+        root->val = 0;
+        q.push(root);
+        while (!q.empty())
+        {
+            // 基于目前队列头和尾获得当前层的宽度
+            res = max(res, q.back()->val - q.front()->val + 1);
+            // 编号缩小的差值
+            int offset = q.front()->val;
+            // 遍历完当前层
+            int n = q.size();
+            for (int i = 0; i < n; ++i)
+            {
+                TreeNode* curr = q.front();
+                q.pop();
+                // 缩小数值
+                curr->val -= offset;
+                if (curr->left)
+                {
+                    // 转换为对应的编号
+                    curr->left->val = curr->val*2;
+                    q.push(curr->left);
+                }
+                if (curr->right)
+                {
+                    // 转换为对应的编号
+                    curr->right->val = curr->val*2+1;
+                    q.push(curr->right);
+                }
+            }
+        }
+        return res;
+    }
+
+
+};
 class BSTIterator_iterative{
 private:
 	TreeNode* cur;
@@ -509,6 +571,7 @@ public:
 	}
 
 };
+
 class getMinDepth {
 public:
 	int getDepth(TreeNode* node)
@@ -1397,7 +1460,52 @@ public:
 		return head;
 	}
 };
+class add_two_numbers_LL{
+public:
+    ListNode* reverseLinkedList(ListNode* head)
+    {
+        ListNode* cur = head;
+        ListNode* pre = nullptr;
+        ListNode* tmp;
+        while (cur) {
+            tmp = cur->next;
+            cur->next = pre;
+            pre = cur;
+            cur = tmp;
+        }
+        return pre;
+    }
+    ListNode* addTwonumbers(ListNode* L1, ListNode* L2){
+        ListNode* reversed_L1=reverseLinkedList(L1);
+        ListNode* reversed_L2=reverseLinkedList(L2);
+        ListNode* head=nullptr;
+        ListNode* tail=nullptr;
+        int carry=0;
+        while(reversed_L1||reversed_L2){
+            int n1=reversed_L1?reversed_L1->val:0;
+            int n2=reversed_L2?reversed_L2->val:0;
+            int sum=n1+n2+carry;
+            if(!head){
+                head=tail=new ListNode(sum%10);
+            }else{
+                tail->next=new ListNode(sum%10);
+                tail=tail->next;
+            }
+            carry=sum/10;
+            if(reversed_L1){
+                reversed_L1=reversed_L1->next;
+            }
+            if(reversed_L2){
+                reversed_L2=reversed_L2->next;
+            }
+        }
+        if(carry>0){
+            tail->next=new ListNode(carry);
+        }
+        return reverseLinkedList(head);
 
+    }
+};
 class merge_two_sorted_LL {
 	//输入：l1 = [1, 2, 4], l2 = [1, 3, 4]
 	//输出：[1, 1, 2, 3, 4, 4]
@@ -4328,6 +4436,21 @@ int main()
                                     {7,8,9}};
     vector<int> spiral_res=spiralOrder.spiralorder(orig_matrix);
     cout<<"spiral traversal is: "<<spiral_res<<endl;
+
+    add_two_numbers_LL addTwoNumbersLL;
+    SinglyLinkedList add_L1{2,4,3};
+    SinglyLinkedList add_L2{6,1,8};
+    ListNode* add_two_res=addTwoNumbersLL.addTwonumbers(add_L1.head,add_L2.head);
+    //cout<<add_two_res->val<<endl;
+    printLL(add_two_res);
+
+    property_of_binary_tree binary_tree_property;
+//  reuse this binary tree
+//    TreeNode* Bst_Root = new TreeNode(7);
+//    TreeNode* Bst_Root_Left = new TreeNode(3);
+//    TreeNode* Bst_Root_Right = new TreeNode(15);
+//    TreeNode* Bst_Root_Right_Left = new TreeNode(9);
+//    TreeNode* Bst_Root_Right_Right = new TreeNode(20);
 
 
 
