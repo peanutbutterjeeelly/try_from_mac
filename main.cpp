@@ -444,6 +444,7 @@ public:
                 curr->val -= offset;
                 if (curr->left)
                 {
+                    //
                     // 转换为对应的编号
                     curr->left->val = curr->val*2;
                     q.push(curr->left);
